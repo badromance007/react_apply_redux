@@ -1,8 +1,19 @@
-import {createStore} from "redux"
+import {createStore, applyMiddleware} from "redux"
+import thunk from "redux-thunk"
 
 export function increment() {
-    return {
-        type: "INCREMENT"
+    return (dispatch, getState) => {
+        const number = getState()
+        const baseUrl = "https://swapi.dev/api/people"
+        fetch(`${baseUrl}/${number}`)
+            .then(res => res.json())
+            .then(res => {
+                console.log(res)
+                dispatch({
+                    type: "INCREMENT",
+                    payload: res
+                })
+            })
     }
 }
 
@@ -25,6 +36,6 @@ function reducer(count = 0, action) {
     }
 }
 
-const store = createStore(reducer)
+const store = createStore(reducer, applyMiddleware(thunk))
 store.subscribe(() => console.log(store.getState()))
 export default store
