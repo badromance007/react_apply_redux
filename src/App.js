@@ -1,13 +1,15 @@
 import './App.css';
-import {connect} from "react-redux"
+import {useSelector, useDispatch} from "react-redux"
 import {increment, decrement} from "./redux"
 
 function App(props) {
+  const count = useSelector(state => state)
+  const dispatch = useDispatch()
   return (
     <div>
-      <h1>Count: {props.count}</h1>
-      <button onClick={props.increment}>-</button>
-      <button onClick={props.decrement}>+</button>
+      <h1>Count: {count}</h1>
+      <button onClick={() => dispatch(decrement())}>-</button>
+      <button onClick={() => dispatch(increment())}>+</button>
     </div>
   );
 }
@@ -25,4 +27,5 @@ function App(props) {
 
 // export default connect(mapStateToProps, mapDispatchToProps)(App);
 
-export default connect(state => ({count: state}), {increment, decrement})(App)
+// export default connect(state => ({count: state}), {increment, decrement})(App)
+export default App
